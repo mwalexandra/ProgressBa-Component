@@ -1,2 +1,2 @@
-# ProgressBa-Component
-  task component for Trood position
+# ProgressBar-Component
+  task component task for Trood position
