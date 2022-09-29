@@ -13,9 +13,7 @@ const data = {
 
 function App() {
   return (
-    <div style={{'width': `${data.barWidthInPx}px`}}>
-      <ProgressBar items={data.items} height={data.barHeightInPx} width={data.barWidthInPx}/>
-    </div>
+    <ProgressBar data={data} />
   );
 }
 

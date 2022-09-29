@@ -1,7 +1,7 @@
 import style from './index.module.css'
 
 function BarUnit({ color }){
-
+  
   return(
     <div 
       className={style.unit}
@@ -9,4 +9,5 @@ function BarUnit({ color }){
     ></div>
   )
 }
+
 export default BarUnit;

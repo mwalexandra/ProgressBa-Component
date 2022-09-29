@@ -1,58 +1,44 @@
-import BarUnit from './BarUnit';
+import ItemBar from './ItemBar';
+import Legend from './Legend';
 import style from './index.module.css';
+import { divideBy100, setNewItems } from '../../helpers'
 
-function ProgressBar({ items, height, width }) {
+function ProgressBar({ data }) {
 
-  const total = items.reduce((res, item) => {return res + item.value}, 0);
+  const { items, barHeightInPx: height, barWidthInPx: width } = data;
+
+  const total = items.reduce((res, item) => {return res + item.value}, 0),
+        valueOfOneUnit = divideBy100(total),
+        pxInOnePerc = divideBy100(width),
+        itemsWithPerc = setNewItems(items, valueOfOneUnit, pxInOnePerc);
   
-  const valueOfOneUnit = total / 100;
-  const pxInOnePerc = width / 100;
-
-  const itemsWithPerc = items.map(item => {
-    item.percent = Math.round(item.value / valueOfOneUnit);
-    item.px = item.percent * pxInOnePerc;
-    return item;
-  })
-  console.log(itemsWithPerc);
-  
-  let bars = items && items.length && itemsWithPerc.map((item, i) => {
-    const unitsNum = Math.round(item.px / 8); // width of the barUnit is 5 and plus left/right margins are 1.5px
-    const units = [];
-    for(let i = unitsNum; i > 0; i--){
-      units.push(<BarUnit color={item.color} key={i}/>)
-    }
-    return (
-      <div className={style.bar} style={{'height': height}}  key={i}>
-        {units}
-      </div>
-    )
+  // bars for every item
+  const itemBars = itemsWithPerc.map((item, i) => {
+    return <ItemBar 
+              item={item}
+              height={height}
+              key={i} 
+            />
   });
 
-  let values = items && items.length && itemsWithPerc.map((item, i) => {
-    if(item.px > 0){
-      return (
-        <div className="value" style={{'color': item.color, 'width': item.px + 'px'}}  key={i}>
-          <span>{item.value}</span>
-        </div>
-      )
-    } else {
-      return undefined;
-    }
+  // legend for every item
+  const legends = itemsWithPerc.map((item, i) => {
+    return <Legend
+              item={item}
+              key={i} 
+            />
   });
 
   return (
-    <div className={style.progressBar}
+    <div 
+      className={style.progressBar}
       style={{'width': width + 'px'}}
     >
       <div className={style.bars}>
-        {bars ? bars : undefined}
+        {itemBars}
       </div>
-      <div className={style.values}>
-        {values ? values: undefined}
-      </div>
-      <div className="scale">
-      </div>
-      <div className="legends">
+      <div className={style.legend}>
+        {legends}
       </div>
     </div>
   );

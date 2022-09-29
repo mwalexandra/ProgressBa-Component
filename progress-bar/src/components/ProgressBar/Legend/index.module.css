@@ -1,0 +1,11 @@
+
+.legend {
+  font-size: .9rem;
+}
+.legendColor {
+  display: inline-block;
+  margin-right: .5rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
